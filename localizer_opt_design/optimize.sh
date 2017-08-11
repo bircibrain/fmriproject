@@ -27,12 +27,12 @@ seed=`cat /dev/random|head -c 256|cksum |awk '{print $1}'`
 RSFgen \
 -nt $NT \
 -num_stimts 6 \
--nreps 1 $n_reps -nblock 1 `awk "BEGIN {print $len_block/2}"` \
--nreps 2 $n_reps -nblock 2 `awk "BEGIN {print $len_block/2}"` \
--nreps 3 $n_reps -nblock 3 `awk "BEGIN {print $len_block/2}"` \
--nreps 4 $n_reps -nblock 4 `awk "BEGIN {print $len_block/2}"` \
--nreps 5 $n_reps -nblock 5 `awk "BEGIN {print $len_block/2}"` \
--nreps 6 $n_reps -nblock 6 `awk "BEGIN {print $len_block/2}"` \
+-nreps 1 $n_reps -nblock 1 `awk "BEGIN {print $len_block/$TR}"` \
+-nreps 2 $n_reps -nblock 2 `awk "BEGIN {print $len_block/$TR}"` \
+-nreps 3 $n_reps -nblock 3 `awk "BEGIN {print $len_block/$TR}"` \
+-nreps 4 $n_reps -nblock 4 `awk "BEGIN {print $len_block/$TR}"` \
+-nreps 5 $n_reps -nblock 5 `awk "BEGIN {print $len_block/$TR}"` \
+-nreps 6 $n_reps -nblock 6 `awk "BEGIN {print $len_block/$TR}"` \
 -seed $seed \
 -prefix ${prefix}.${i}.
 
