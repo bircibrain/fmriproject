@@ -1,0 +1,51 @@
+# import psychopy modules
+from psychopy import visual, core, event, sound, gui, data
+
+# Set up text displays
+
+Rhand_txt = visual.TextStim(win, text = "Curl your right hand.",
+                        pos = [0,0],
+                        color = "black",
+                        height = 50,
+                        font = "Arial")
+
+Lhand_txt = visual.TextStim(win, text = "Curl your left hand.",
+                        pos = [0,0],
+                        color = "black",
+                        height = 50,
+                        font = "Arial")
+
+Rfoot_txt = visual.TextStim(win, text = "Curl your right foot.",
+                        pos = [0,0],
+                        color = "black",
+                        height = 50,
+                        font = "Arial")
+
+Lfoot_txt = visual.TextStim(win, text = "Curl your left foot.",
+                        pos = [0,0],
+                        color = "black",
+                        height = 50,
+                        font = "Arial")
+
+tongue_txt = visual.TextStim(win, text = "Curl your tongue.",
+                        pos = [0,0],
+                        color = "black",
+                        height = 50,
+                        font = "Arial")
+
+null_txt = visual.TextStim(win, text = "+",
+                        pos = [0,0],
+                        color = "black",
+                        height = 50,
+                        font = "Arial")
+
+# start clock from 5 from scanner
+
+# load in our stimulus timing excel file
+
+# check time
+# if time matches "time" column
+# draw text stim to the screen & flip it
+# present for 1.25s and then clear the screen
+
+
