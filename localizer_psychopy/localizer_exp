@@ -1,7 +1,15 @@
 # import psychopy modules
 from psychopy import visual, core, event, sound, gui, data
 
+#set parent directory
+parent_dir = "/Users/Kayleigh/fmriproject/localizer_psychopy/"
+
 # Set up text displays
+
+win = visual.Window(size = [1920,1080],
+                    color = "white",
+                    fullscr = False,
+                    units = "pix")
 
 Rhand_txt = visual.TextStim(win, text = "Curl your right hand.",
                         pos = [0,0],
@@ -39,13 +47,35 @@ null_txt = visual.TextStim(win, text = "+",
                         height = 50,
                         font = "Arial")
 
-# start clock from 5 from scanner
 
-# load in our stimulus timing excel file
+# in the data source, there are two columns: Time (0-502) and StimType (1-6)
+# this part is trying to link the numbers in StimType to the names of the text displays
+STIM = {1: Rhand_txt, 2: Lhand_txt, 3: Rfoot_txt, 4: Lfoot_txt, 5: tongue_txt, 6: null_txt}
+# load in our stimulus timing csv file
+TRIAL_LIST = data.importConditions(fileName = parent_dir + "localizer_datasource.csv")
 
-# check time
-# if time matches "time" column
-# draw text stim to the screen & flip it
-# present for 1.25s and then clear the screen
+#create clock
+globalClock = core.Clock()
 
+# start clock from 5 from scanner --- tim is going to add this part
+
+# rename clock?
+t0 = globalClock.getTime()
+
+# while the clock is running...
+while t0 >= 0:
+# Goal for this section: Check what time it is. If the time matches a value in the column "Time"
+# then present the text display from that same row for 1.25 seconds and then go back to blank
+# if  the time is greater than 503.25 seconds, end the while loop
+    for index in range(len(TRIAL_LIST)):
+        if TRIAL_LIST[index]["Time"] == t0:
+            STIM[TRIAL_LIST[index]["StimType"]].draw(); win.flip()
+            core.wait(1.25)
+            win.flip()
+        elif t0 > 503.25:
+            break
+
+
+win.close()
+core.quit()
 
