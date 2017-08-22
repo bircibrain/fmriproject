@@ -1,0 +1,31 @@
+------------------------------------------------------------
+GLT matrix from 'SYM: .33*A .33*B .33*C -G':
+          0          0          0          0          0       0.33       0.33       0.33          0          0          0         -1          0 
+ 
+
+Stimulus: A 
+  h[ 0] norm. std. dev. =   0.1630
+
+Stimulus: B 
+  h[ 0] norm. std. dev. =   0.1573
+
+Stimulus: C 
+  h[ 0] norm. std. dev. =   0.1654
+
+Stimulus: D 
+  h[ 0] norm. std. dev. =   0.1551
+
+Stimulus: E 
+  h[ 0] norm. std. dev. =   0.1594
+
+Stimulus: F 
+  h[ 0] norm. std. dev. =   0.1526
+
+Stimulus: G 
+  h[ 0] norm. std. dev. =   0.1131
+
+Stimulus: H 
+  h[ 0] norm. std. dev. =   0.1571
+
+General Linear Test: GLT#1  
+  LC[0] norm. std. dev. =   0.1062 
