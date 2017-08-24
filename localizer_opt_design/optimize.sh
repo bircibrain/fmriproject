@@ -2,10 +2,10 @@
 
 # command line arguments
 N=$1 #the number of iterations
-NT=$2 # number of volumes or time points
+NT=$2 # number of time points (in seconds)
 TR=$3
 n_reps=$4 # number of blocks for each type
-len_block=$5 # the length of block for each type (in second)
+len_block=$5 # the length of block for each type (in seconds)
 prefix=`echo reps-${n_reps}_len-${len_block}`
 
 
@@ -22,29 +22,28 @@ seed=`cat /dev/random|head -c 256|cksum |awk '{print $1}'`
 # use RSFgen to simulate a design based on inputs
 # 6 conditions:
 # right hand, left hand, right foot, left foot, tongue, null
-#use -seed $seed
-#-prefix rsf.${i}.
+# the TR for RSFgen and make_stim_times.py is 0.1 to have a more fine-grained timing control
 RSFgen \
--nt $NT \
+-nt `awk "BEGIN {print $NT/0.1}"` \
 -num_stimts 6 \
--nreps 1 $n_reps -nblock 1 `awk "BEGIN {print $len_block/$TR}"` \
--nreps 2 $n_reps -nblock 2 `awk "BEGIN {print $len_block/$TR}"` \
--nreps 3 $n_reps -nblock 3 `awk "BEGIN {print $len_block/$TR}"` \
--nreps 4 $n_reps -nblock 4 `awk "BEGIN {print $len_block/$TR}"` \
--nreps 5 $n_reps -nblock 5 `awk "BEGIN {print $len_block/$TR}"` \
--nreps 6 $n_reps -nblock 6 `awk "BEGIN {print $len_block/$TR}"` \
+-nreps 1 $n_reps -nblock 1 `awk "BEGIN {print $len_block/0.1}"` \
+-nreps 2 $n_reps -nblock 2 `awk "BEGIN {print $len_block/0.1}"` \
+-nreps 3 $n_reps -nblock 3 `awk "BEGIN {print $len_block/0.1}"` \
+-nreps 4 $n_reps -nblock 4 `awk "BEGIN {print $len_block/0.1}"` \
+-nreps 5 $n_reps -nblock 5 `awk "BEGIN {print $len_block/0.1}"` \
+-nreps 6 $n_reps -nblock 6 `awk "BEGIN {print $len_block/0.1}"` \
 -seed $seed \
 -prefix ${prefix}.${i}.
 
 make_stim_times.py \
 -files ${prefix}.${i}.*.1D \
 -prefix ${prefix}.stim.${i} \
--nt $NT \
--tr $TR \
+-nt `awk "BEGIN {print $NT/0.1}"` \
+-tr 0.1 \
 -nruns 1
 
 3dDeconvolve \
--nodata $NT $TR \
+-nodata `awk "BEGIN {print $NT/$TR}"` $TR \
 -polort 'A' \
 -num_stimts 6 \
 -stim_times 1 ${prefix}.stim.${i}.01.1D 'BLOCK('$len_block')' \
