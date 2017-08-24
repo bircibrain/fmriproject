@@ -1,7 +1,0 @@
-*+ WARNING: '-stim_times 1' (LOCAL) run#1 has 19 times outside range 0 .. 502 [PSFB syndrome]
-*+ WARNING: '-stim_times 1' file 'reps-1_len-84.stim.10.01.1D' has 0 duplicate and 7344 near-duplicate times ???
-*+ WARNING: '-stim_times 2' file 'reps-1_len-84.stim.10.02.1D' has 0 duplicate and 7529 near-duplicate times ???
-*+ WARNING: '-stim_times 3' file 'reps-1_len-84.stim.10.03.1D' has 0 duplicate and 7517 near-duplicate times ???
-*+ WARNING: '-stim_times 4' file 'reps-1_len-84.stim.10.04.1D' has 0 duplicate and 7515 near-duplicate times ???
-*+ WARNING: '-stim_times 5' file 'reps-1_len-84.stim.10.05.1D' has 0 duplicate and 7517 near-duplicate times ???
-*+ WARNING: '-stim_times 6' file 'reps-1_len-84.stim.10.06.1D' has 0 duplicate and 7515 near-duplicate times ???
