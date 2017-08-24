@@ -39,6 +39,30 @@ RSFgen \
 -one_file \
 -prefix ${prefix}.${i}
 
+# create sequence timing file (condition on column 1, onset time on column 2)
+## use the same seed to generate timing of all conditions in one column
+RSFgen \
+-nt $NT_ts \
+-num_stimts 6 \
+-nreps 1 $n_reps -nblock 1 $len_block_ts \
+-nreps 2 $n_reps -nblock 2 $len_block_ts \
+-nreps 3 $n_reps -nblock 3 $len_block_ts \
+-nreps 4 $n_reps -nblock 4 $len_block_ts \
+-nreps 5 $n_reps -nblock 5 $len_block_ts \
+-nreps 6 $n_reps -nblock 6 $len_block_ts \
+-seed $seed \
+-one_col \
+-prefix ${prefix}.${i}.one_col
+## trial onset times 
+tri_time=`seq 1 $len_block $NT | awk '{print $1-1}'`
+## extract trial sequence
+tri_seq=`1d_tool.py -infile ${prefix}.${i}.one_col.1D \
+	-select_rows '0..$('$len_block_ts')' \
+	-write stdout`
+## combine trial onset times and sequence, and save to file
+paste <(echo "$tri_time") <(echo "$tri_seq") \
+	> ${prefix}.${i}.seq.time.1D
+
 # make stim files for 3dDeconvolve
 make_stim_times.py \
 -files ${prefix}.${i}.1D \
