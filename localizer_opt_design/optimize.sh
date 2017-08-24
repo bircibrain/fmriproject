@@ -36,10 +36,12 @@ RSFgen \
 -nreps 5 $n_reps -nblock 5 $len_block_ts \
 -nreps 6 $n_reps -nblock 6 $len_block_ts \
 -seed $seed \
--prefix ${prefix}.${i}.
+-one_file \
+-prefix ${prefix}.${i}
 
+# make stim files for 3dDeconvolve
 make_stim_times.py \
--files ${prefix}.${i}.*.1D \
+-files ${prefix}.${i}.1D \
 -prefix ${prefix}.stim.${i} \
 -nt $NT_ts \
 -tr $time_steps \
