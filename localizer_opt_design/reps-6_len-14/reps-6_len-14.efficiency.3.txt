@@ -1,0 +1,39 @@
+------------------------------------------------------------
+GLT matrix from 'SYM: 0.5*RH 0.5*LH -0.5*RF -0.5*LF':
+          0          0          0          0          0        0.5        0.5       -0.5       -0.5          0          0 
+ 
+------------------------------------------------------------
+GLT matrix from 'SYM: 0.5*RH 0.5*LH -T':
+          0          0          0          0          0        0.5        0.5          0          0         -1          0 
+ 
+------------------------------------------------------------
+GLT matrix from 'SYM: 0.5*RF 0.5*LF -T':
+          0          0          0          0          0          0          0        0.5        0.5         -1          0 
+ 
+
+Stimulus: RH 
+  h[ 0] norm. std. dev. =   0.0010
+
+Stimulus: LH 
+  h[ 0] norm. std. dev. =   0.0012
+
+Stimulus: RF 
+  h[ 0] norm. std. dev. =   0.0011
+
+Stimulus: LF 
+  h[ 0] norm. std. dev. =   0.0012
+
+Stimulus: T 
+  h[ 0] norm. std. dev. =   0.0011
+
+Stimulus: Null 
+  h[ 0] norm. std. dev. =   0.0011
+
+General Linear Test: GLT#1  
+  LC[0] norm. std. dev. =   0.0003 
+
+General Linear Test: GLT#2  
+  LC[0] norm. std. dev. =   0.0004 
+
+General Linear Test: GLT#3  
+  LC[0] norm. std. dev. =   0.0004 
