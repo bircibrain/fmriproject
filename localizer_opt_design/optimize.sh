@@ -8,6 +8,10 @@ n_reps=$4 # number of blocks for each type
 len_block=$5 # the length of block for each type (in seconds)
 prefix=`echo reps-${n_reps}_len-${len_block}`
 
+# more fine-grained timing control when generating stimulus timing
+time_steps=0.1 
+NT_ts=`awk "BEGIN {print $NT/$time_steps}"`
+len_block_ts=`awk "BEGIN {print $len_block/$time_steps}"`
 
 mkdir $prefix
 cd $prefix
@@ -22,24 +26,23 @@ seed=`cat /dev/random|head -c 256|cksum |awk '{print $1}'`
 # use RSFgen to simulate a design based on inputs
 # 6 conditions:
 # right hand, left hand, right foot, left foot, tongue, null
-# the TR for RSFgen and make_stim_times.py is 0.1 to have a more fine-grained timing control
 RSFgen \
--nt `awk "BEGIN {print $NT/0.1}"` \
+-nt $NT_ts \
 -num_stimts 6 \
--nreps 1 $n_reps -nblock 1 `awk "BEGIN {print $len_block/0.1}"` \
--nreps 2 $n_reps -nblock 2 `awk "BEGIN {print $len_block/0.1}"` \
--nreps 3 $n_reps -nblock 3 `awk "BEGIN {print $len_block/0.1}"` \
--nreps 4 $n_reps -nblock 4 `awk "BEGIN {print $len_block/0.1}"` \
--nreps 5 $n_reps -nblock 5 `awk "BEGIN {print $len_block/0.1}"` \
--nreps 6 $n_reps -nblock 6 `awk "BEGIN {print $len_block/0.1}"` \
+-nreps 1 $n_reps -nblock 1 $len_block_ts \
+-nreps 2 $n_reps -nblock 2 $len_block_ts \
+-nreps 3 $n_reps -nblock 3 $len_block_ts \
+-nreps 4 $n_reps -nblock 4 $len_block_ts \
+-nreps 5 $n_reps -nblock 5 $len_block_ts \
+-nreps 6 $n_reps -nblock 6 $len_block_ts \
 -seed $seed \
 -prefix ${prefix}.${i}.
 
 make_stim_times.py \
 -files ${prefix}.${i}.*.1D \
 -prefix ${prefix}.stim.${i} \
--nt `awk "BEGIN {print $NT/0.1}"` \
--tr 0.1 \
+-nt $NT_ts \
+-tr $time_steps \
 -nruns 1
 
 3dDeconvolve \
