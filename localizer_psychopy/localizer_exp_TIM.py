@@ -65,50 +65,59 @@ STIM = {1: Rhand_txt, 2: Lhand_txt, 3: Rfoot_txt, 4: Lfoot_txt, 5: tongue_txt, 6
 # load in our stimulus timing csv file
 TRIAL_LIST = data.importConditions(fileName = parent_dir + "localizer_datasource.csv")
 
+
+def check_exit():
+#abort if esc was pressed
+    if event.getKeys('escape'):
+        win.close()
+        core.quit()
+        
 #create clock
 globalClock = core.Clock()
 #show waiting for scanner until keypress
 ScannerWait_txt.draw()
 win.flip()  
 #wait for a 5 or t keypress to start
-def get_keypress():
-    key = event.getKeys()
-key= get_keypress()
-key==event.waitKeys(keyList=['t','5'])
-# Create variable for start point from when scanner began (t0)
-t0 = globalClock.getTime()
+keys =event.waitKeys(keyList=['t','5'], timeStamped=globalClock)
+t0 = float(keys[0][0])
 #creating variable for flip duration
 flip_duration= 21
-# while the clock is running...
-while globalClock.getTime()-t0 < 504.00:
 # Goal for this section: Check what time it is. If the time matches a value in the column "Time"
 # then present the text display from that same row for 1.25 seconds and then go back to blank
-# if  the time is greater than 503.25 seconds, end the while loop
-# create a variable for the time (t1)
-    t1=globalClock.getTime()-t0
-#setting up the first stimulus outside  the loop
-    STIM[TRIAL_LIST[0]["StimType"]].draw()
-# look through the rows of the data source     
-    for index in range(len(TRIAL_LIST)):
-# if the number in the "Time" column is less than the timestamp
-        while t1 <= TRIAL_LIST[index+1]["Time"]:
-# draw the screen indicated in the StimType column and then present it
-            if TRIAL_LIST[index]["Time"] <= t1:
-# draw the screen indicated in the StimType column and then present it
-                STIM[TRIAL_LIST[index]["StimType"]].draw(); win.flip()
-# wait for 1.25 seconds
-                core.wait(1.25)
-# then flip back to crosshair
-                null_txt.draw()
-                win.flip()
-#if esc key pressed, abort the task
-                key= get_keypress()
-            elif key==event.getKeys(keyList=['escape']):
-                win.close()
-                core.quit()
-            elif globalClock.getTime()-t0 > 503.25:
-                break
 
+#setting up the first stimulus outside  the loop
+STIM[TRIAL_LIST[0]["StimType"]].draw()
+# look through the rows of the data source     
+for index in range(len(TRIAL_LIST)):
+    #draw so we are ready to flip
+    STIM[TRIAL_LIST[index]["StimType"]].draw();
+    #wait until the right moment
+    #abort if esc was pressed
+    #exit will be delayed until the end of a block
+    check_exit()
+    while globalClock.getTime()-t0 < TRIAL_LIST[index]['Time']:
+        #abort if esc was pressed
+        check_exit()
+        
+        #wait a tick
+        core.wait(1.0/60.0)
+    
+    #done waiting
+    #hard coding the number of cycles
+    for j in range(8):
+        win.flip()
+        onset = globalClock.getTime()
+        null_txt.draw()
+        core.wait(1.25-(globalClock.getTime()-onset))
+        win.flip()
+        onset = globalClock.getTime()
+        STIM[TRIAL_LIST[index]["StimType"]].draw();
+        core.wait(1.25-(globalClock.getTime()-onset))
+    
+    #clear screen
+    null_txt.draw()
+    win.flip()
+    
 # close everything
 win.close()
 core.quit()
