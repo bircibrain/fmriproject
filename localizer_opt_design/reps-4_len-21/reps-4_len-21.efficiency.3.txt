@@ -12,28 +12,28 @@ GLT matrix from 'SYM: 0.5*RF 0.5*LF -T':
  
 
 Stimulus: RH 
-  h[ 0] norm. std. dev. =   0.0150
+  h[ 0] norm. std. dev. =   0.0008
 
 Stimulus: LH 
-  h[ 0] norm. std. dev. =   0.0158
+  h[ 0] norm. std. dev. =   0.0007
 
 Stimulus: RF 
-  h[ 0] norm. std. dev. =   0.0141
+  h[ 0] norm. std. dev. =   0.0008
 
 Stimulus: LF 
-  h[ 0] norm. std. dev. =   0.0140
+  h[ 0] norm. std. dev. =   0.0008
 
 Stimulus: T 
-  h[ 0] norm. std. dev. =   0.0155
+  h[ 0] norm. std. dev. =   0.0008
 
 Stimulus: Null 
-  h[ 0] norm. std. dev. =   0.0139
+  h[ 0] norm. std. dev. =   0.0009
 
 General Linear Test: GLT#1  
-  LC[0] norm. std. dev. =   0.0046 
+  LC[0] norm. std. dev. =   0.0003 
 
 General Linear Test: GLT#2  
-  LC[0] norm. std. dev. =   0.0054 
+  LC[0] norm. std. dev. =   0.0003 
 
 General Linear Test: GLT#3  
-  LC[0] norm. std. dev. =   0.0053 
+  LC[0] norm. std. dev. =   0.0003 

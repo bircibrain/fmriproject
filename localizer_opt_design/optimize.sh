@@ -2,12 +2,16 @@
 
 # command line arguments
 N=$1 #the number of iterations
-NT=$2 # number of volumes or time points
+NT=$2 # number of time points (in seconds)
 TR=$3
 n_reps=$4 # number of blocks for each type
-len_block=$5 # the length of block for each type (in second)
+len_block=$5 # the length of block for each type (in seconds)
 prefix=`echo reps-${n_reps}_len-${len_block}`
 
+# more fine-grained timing control when generating stimulus timing
+time_steps=0.1 
+NT_ts=`awk "BEGIN {print $NT/$time_steps}"`
+len_block_ts=`awk "BEGIN {print $len_block/$time_steps}"`
 
 mkdir $prefix
 cd $prefix
@@ -22,29 +26,53 @@ seed=`cat /dev/random|head -c 256|cksum |awk '{print $1}'`
 # use RSFgen to simulate a design based on inputs
 # 6 conditions:
 # right hand, left hand, right foot, left foot, tongue, null
-#use -seed $seed
-#-prefix rsf.${i}.
 RSFgen \
--nt $NT \
+-nt $NT_ts \
 -num_stimts 6 \
--nreps 1 $n_reps -nblock 1 `awk "BEGIN {print $len_block/$TR}"` \
--nreps 2 $n_reps -nblock 2 `awk "BEGIN {print $len_block/$TR}"` \
--nreps 3 $n_reps -nblock 3 `awk "BEGIN {print $len_block/$TR}"` \
--nreps 4 $n_reps -nblock 4 `awk "BEGIN {print $len_block/$TR}"` \
--nreps 5 $n_reps -nblock 5 `awk "BEGIN {print $len_block/$TR}"` \
--nreps 6 $n_reps -nblock 6 `awk "BEGIN {print $len_block/$TR}"` \
+-nreps 1 $n_reps -nblock 1 $len_block_ts \
+-nreps 2 $n_reps -nblock 2 $len_block_ts \
+-nreps 3 $n_reps -nblock 3 $len_block_ts \
+-nreps 4 $n_reps -nblock 4 $len_block_ts \
+-nreps 5 $n_reps -nblock 5 $len_block_ts \
+-nreps 6 $n_reps -nblock 6 $len_block_ts \
 -seed $seed \
--prefix ${prefix}.${i}.
+-one_file \
+-prefix ${prefix}.${i}
 
+# create sequence timing file (condition on column 1, onset time on column 2)
+## use the same seed to generate timing of all conditions in one column
+RSFgen \
+-nt $NT_ts \
+-num_stimts 6 \
+-nreps 1 $n_reps -nblock 1 $len_block_ts \
+-nreps 2 $n_reps -nblock 2 $len_block_ts \
+-nreps 3 $n_reps -nblock 3 $len_block_ts \
+-nreps 4 $n_reps -nblock 4 $len_block_ts \
+-nreps 5 $n_reps -nblock 5 $len_block_ts \
+-nreps 6 $n_reps -nblock 6 $len_block_ts \
+-seed $seed \
+-one_col \
+-prefix ${prefix}.${i}.one_col
+## trial onset times 
+tri_time=`seq 1 $len_block $NT | awk '{print $1-1}'`
+## extract trial sequence
+tri_seq=`1d_tool.py -infile ${prefix}.${i}.one_col.1D \
+	-select_rows '0..$('$len_block_ts')' \
+	-write stdout`
+## combine trial onset times and sequence, and save to file
+paste <(echo "$tri_time") <(echo "$tri_seq") \
+	> ${prefix}.${i}.seq.time.1D
+
+# make stim files for 3dDeconvolve
 make_stim_times.py \
--files ${prefix}.${i}.*.1D \
+-files ${prefix}.${i}.1D \
 -prefix ${prefix}.stim.${i} \
--nt $NT \
--tr $TR \
+-nt $NT_ts \
+-tr $time_steps \
 -nruns 1
 
 3dDeconvolve \
--nodata $NT $TR \
+-nodata `awk "BEGIN {print $NT/$TR}"` $TR \
 -polort 'A' \
 -num_stimts 6 \
 -stim_times 1 ${prefix}.stim.${i}.01.1D 'BLOCK('$len_block')' \
