@@ -90,9 +90,17 @@ instruct_txt = visual.TextStim(win, text = "     For the next eight minutes, you
                         wrapWidth= 1000,
                         autoLog=True)
 
+#get some startup information from the user
+info = {'participant_id':'', 'session': '1'}
+dlg = gui.DlgFromDict(info, title = 'Localizer Startup')
+if not dlg.OK:
+    core.quit()
+ 
+prefix = 'sub-%s_ses-%s_task-localizer' % (info['participant_id'], info['session'])
+
 #logging data 
 # overwrite (filemode='w') a detailed log of the last run in this dir
-errorLog = logging.LogFile("errorlog.log", level=logging.DATA, filemode='w')
+errorLog = logging.LogFile(prefix + "_errorlog.log", level=logging.DATA, filemode='w')
 #win.logonFlip(msg=' ', level=logging.DATA)
 # in the data source, there are two columns: Time (0-502) and StimType (1-6)
 # Link the numbers in StimType to the names of the text displays
@@ -170,7 +178,7 @@ for index in range(len(TRIAL_LIST)):
                                        ))))# round the onset time (in seconds) to the third decimal place
 
 ### SAVE DATA ###
-np.savetxt(parent_dir+"data_.txt",
+np.savetxt(parent_dir+prefix+"_onsets.tsv",
             data, fmt='%s', delimiter='\t', newline='\n',
             header='', footer='', comments='# ')
 # close everything
