@@ -1,0 +1,25 @@
+------------------------------------------------------------
+GLT matrix from 'SYM: 0.33*LW 0.33*HW 0.33*FW -1.0*HASH':
+          0          0          0          0       0.33       0.33       0.33         -1          0          0 
+ 
+
+Stimulus: LW 
+  h[ 0] norm. std. dev. =   0.4629
+
+Stimulus: HW 
+  h[ 0] norm. std. dev. =   0.4659
+
+Stimulus: FW 
+  h[ 0] norm. std. dev. =   0.4546
+
+Stimulus: HASH 
+  h[ 0] norm. std. dev. =   0.4476
+
+Stimulus: FIL 
+  h[ 0] norm. std. dev. =   0.4567
+
+Stimulus: NULL 
+  h[ 0] norm. std. dev. =   0.4696
+
+General Linear Test: GLT#1  
+  LC[0] norm. std. dev. =   0.1072 
