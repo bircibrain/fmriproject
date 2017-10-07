@@ -7,11 +7,16 @@ import numpy as np
 #set parent directory
 parent_dir = "./"
 
+#get some startup information from the user
+info = {'participant_id':'', 'session': '1'}
+dlg = gui.DlgFromDict(info, title = 'Localizer Startup')
+if not dlg.OK:
+    core.quit()
 
 # info about the screen
 win = visual.Window(size = [1280,768],
                     color = "white",
-                    fullscr = False,
+                    fullscr = True, allowGUI=False,
                     units = "pix")
 
 # Set up text displays
@@ -90,11 +95,7 @@ instruct_txt = visual.TextStim(win, text = "     For the next eight minutes, you
                         wrapWidth= 1000,
                         autoLog=True)
 
-#get some startup information from the user
-info = {'participant_id':'', 'session': '1'}
-dlg = gui.DlgFromDict(info, title = 'Localizer Startup')
-if not dlg.OK:
-    core.quit()
+
  
 prefix = 'sub-%s_ses-%s_task-localizer' % (info['participant_id'], info['session'])
 
@@ -123,6 +124,7 @@ instruct_txt.draw()
 win.flip() 
 #waiting for space bar to continue
 keys =event.waitKeys(keyList=['space'], timeStamped=globalClock)
+check_exit()
 #show waiting for scanner until keypress
 ScannerWait_txt.draw()
 win.flip()  
@@ -158,13 +160,18 @@ for index in range(len(TRIAL_LIST)):
     for j in range(8):
         STIM[TRIAL_LIST[index]["StimType"]].draw();
         win.flip()
+        onset = globalClock.getTime()
         logging.log("Datalog.log",level=logging.EXP)
         win.logOnFlip("Datalog.log",level=logging.EXP)
-        onset = globalClock.getTime()
+
+        if j ==0 :
+            block_onset = onset - t0
+
         core.wait(1.25-(globalClock.getTime()-onset))
+        
         null_txt.draw()
         win.flip()
-        onset = globalClock.getTime() 
+        onset = globalClock.getTime()
         core.wait(1.25-(globalClock.getTime()-onset))
 #clear screen
     null_txt.draw()
@@ -174,7 +181,7 @@ for index in range(len(TRIAL_LIST)):
 # store data into the numpy array
     data = np.vstack((data, np.hstack((
                                        TRIAL_LIST[index]["StimType"],
-                                       onset,
+                                       block_onset,
                                        ))))# round the onset time (in seconds) to the third decimal place
 
 ### SAVE DATA ###
