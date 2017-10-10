@@ -42,7 +42,7 @@ null_txt = visual.TextStim(win, text = "+",
                         font = "Arial",
                         autoLog=True)
                         
-instruct_txt = visual.TextStim(win, text = " In this experiment you will be reading words.\n Please, read them carefully.\n Press the space bar when you are ready to continue.",
+instruct_txt = visual.TextStim(win, text = " In this experiment you will be reading words.\n Please read them carefully.\n Press the button when you are ready to continue.",
                         pos = [0.0,0.0],
                         color = "black",
                         height = 24,
@@ -53,7 +53,7 @@ instruct_txt = visual.TextStim(win, text = " In this experiment you will be read
                         autoLog=True)
 
 #get some startup information from the user
-info = {'participant_id':'', 'session': '1'}
+info = {'participant_id':'', 'session': ''}
 dlg = gui.DlgFromDict(info, title = 'Word Task Startup')
 if not dlg.OK:
     core.quit()
@@ -66,7 +66,7 @@ errorLog = logging.LogFile(prefix + "_errorlog.log", level=logging.DATA, filemod
 #win.logonFlip(msg=' ', level=logging.DATA)
 # in the data source, there are three columns: Time, StimType and Stim
 # load in our stimulus timing xlsx file
-TRIAL_LIST = data.importConditions(fileName = parent_dir + "RunTest.xlsx")
+TRIAL_LIST = data.importConditions(fileName = parent_dir + "Run" + info['session'] + ".xlsx")
 totalTrials = len(TRIAL_LIST)
                         
 def check_exit():
@@ -92,7 +92,8 @@ t0 = float(keys[0][0])
 #creating variable for flip duration
 flip_duration= 21
 # header for data log
-data = np.hstack(("Stim","StimType","onset"))
+#data = np.hstack(("Stim","StimType","onset"))
+data = [0,0]
 # Goal for this section: Check what time it is. If the time matches a value in the column "Time"
 # then present the text display from that same row for 1.25 seconds and then go back to blank
 for index in range(len(TRIAL_LIST)):
@@ -123,13 +124,13 @@ for index in range(len(TRIAL_LIST)):
     logging.log("Datalog.log",level=logging.EXP)
     win.logOnFlip("Datalog.log",level=logging.EXP)
     onset = globalClock.getTime()
-    core.wait(1.25-(globalClock.getTime()-onset))
+    core.wait(1.0-(globalClock.getTime()-onset))
     null_txt.draw()
     win.flip()
     onset = globalClock.getTime() 
-    core.wait(1.25-(globalClock.getTime()-onset))
+    core.wait(1.5-(globalClock.getTime()-onset))
     # store data into the numpy array
-    data = np.vstack((data, np.hstack((TRIAL_LIST[index]["Stim"],TRIAL_LIST[index]['StimType'],onset,))))# round the onset time (in seconds) to the third decimal place
+    data = np.vstack((data, np.hstack((TRIAL_LIST[index]['StimType'],onset,))))
 #clear screen
 null_txt.draw()
 win.flip()
@@ -141,7 +142,7 @@ win.flip()
     
 ### SAVE DATA ###
 np.savetxt(parent_dir+prefix+"_onsets.tsv",
-            data, fmt='%s', delimiter='\t', newline='\n',
+            data, fmt='%f', delimiter='\t', newline='\n',
             header='', footer='', comments='# ')
 # close everything
 win.close()
