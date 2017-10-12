@@ -11,7 +11,7 @@ parent_dir = "./"
 # info about the screen
 win = visual.Window(size = [1280,768],
                     color = "white",
-                    fullscr = False,
+                    fullscr = True, allowGUI=False,
                     units = "pix")
 
 # Set up text displays
@@ -83,6 +83,7 @@ instruct_txt.draw()
 win.flip() 
 #waiting for space bar to continue
 keys =event.waitKeys(keyList=['space'], timeStamped=globalClock)
+check_exit()
 #show waiting for scanner until keypress
 ScannerWait_txt.draw()
 win.flip()  
@@ -121,16 +122,17 @@ for index in range(len(TRIAL_LIST)):
                         autoLog=True)
     stim.draw();
     win.flip()
+    onset = globalClock.getTime()
     logging.log("Datalog.log",level=logging.EXP)
     win.logOnFlip("Datalog.log",level=logging.EXP)
-    onset = globalClock.getTime()
+    onset_tr = onset - t0
     core.wait(1.0-(globalClock.getTime()-onset))
     null_txt.draw()
     win.flip()
     onset = globalClock.getTime() 
     core.wait(1.5-(globalClock.getTime()-onset))
     # store data into the numpy array
-    data = np.vstack((data, np.hstack((TRIAL_LIST[index]['StimType'],onset,))))
+    data = np.vstack((data, np.hstack((TRIAL_LIST[index]['StimType'],onset_tr,))))
 #clear screen
 null_txt.draw()
 win.flip()
