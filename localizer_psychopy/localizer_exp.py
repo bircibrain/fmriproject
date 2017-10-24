@@ -15,14 +15,14 @@ if not dlg.OK:
 
 # info about the screen
 win = visual.Window(size = [1280,768],
-                    color = "white",
+                    color = "black",
                     fullscr = True, allowGUI=False,
                     units = "pix")
 
 # Set up text displays
 ScannerWait_txt = visual.TextStim(win, text = "Waiting for scanner....",
                         pos = [0.0,0.0],
-                        color = "black",
+                        color = "white",
                         height = 50,
                         alignHoriz='center',
                         alignVert='center',
@@ -31,7 +31,7 @@ ScannerWait_txt = visual.TextStim(win, text = "Waiting for scanner....",
 
 Rhand_txt = visual.TextStim(win, text = "Curl your right hand.",
                         pos = [0.0,0.0],
-                        color = "black",
+                        color = "white",
                         height = 50,
                         alignHoriz='center',
                         alignVert='center',
@@ -40,7 +40,7 @@ Rhand_txt = visual.TextStim(win, text = "Curl your right hand.",
 
 Lhand_txt = visual.TextStim(win, text = "Curl your left hand.",
                         pos = [0.0,0.0],
-                        color = "black",
+                        color = "white",
                         height = 50,
                         alignHoriz='center',
                         alignVert='center',
@@ -49,14 +49,14 @@ Lhand_txt = visual.TextStim(win, text = "Curl your left hand.",
 
 Rfoot_txt = visual.TextStim(win, text = "Curl your right foot.",
                         pos = [0.0,0.0],
-                        color = "black",
+                        color = "white",
                         height = 50,
                         font = "Arial",
                         autoLog=True)
 
 Lfoot_txt = visual.TextStim(win, text = "Curl your left foot.",
                         pos = [0,0],
-                        color = "black",
+                        color = "white",
                         height = 50,
                         alignHoriz='center',
                         alignVert='center',
@@ -65,7 +65,7 @@ Lfoot_txt = visual.TextStim(win, text = "Curl your left foot.",
 
 tongue_txt = visual.TextStim(win, text = "Curl your tongue.",
                         pos = [0,0],
-                        color = "black",
+                        color = "white",
                         height = 50,
                         alignHoriz='center',
                         alignVert='center',
@@ -74,7 +74,7 @@ tongue_txt = visual.TextStim(win, text = "Curl your tongue.",
 
 null_txt = visual.TextStim(win, text = "+",
                         pos = [0.0,0.0],
-                        color = "black",
+                        color = "white",
                         height = 50,
                         alignHoriz='center',
                         alignVert='center',
@@ -87,7 +87,7 @@ instruct_txt = visual.TextStim(win, text = "     For the next eight minutes, you
      When you see a fixation (+), please relax your body.\n\n\
      Press the space bar when you are ready to continue.",
                         pos = [0.0,0.0],
-                        color = "black",
+                        color = "white",
                         height = 24,
                         alignHoriz='center',
                         alignVert='center',

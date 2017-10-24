@@ -7,17 +7,22 @@ import numpy as np
 #set parent directory
 parent_dir = "./"
 
+#get some startup information from the user
+info = {'participant_id':'', 'run': ['1', '2', 'Test'], 'session': '1'}
+dlg = gui.DlgFromDict(info, title = 'Word Task Startup')
+if not dlg.OK:
+    core.quit()
 
 # info about the screen
 win = visual.Window(size = [1280,768],
-                    color = "white",
-                    fullscr = False,
+                    color = "black",
+                    fullscr = True, allowGUI=False,
                     units = "pix")
 
 # Set up text displays
 ScannerWait_txt = visual.TextStim(win, text = "Waiting for scanner....",
                         pos = [0.0,0.0],
-                        color = "black",
+                        color = "white",
                         height = 50,
                         alignHoriz='center',
                         alignVert='center',
@@ -26,7 +31,7 @@ ScannerWait_txt = visual.TextStim(win, text = "Waiting for scanner....",
 
 FinalThankYou_txt = visual.TextStim(win, text = "Thank you!",
                         pos = [0.0,0.0],
-                        color = "black",
+                        color = "white",
                         height = 50,
                         alignHoriz='center',
                         alignVert='center',
@@ -35,7 +40,7 @@ FinalThankYou_txt = visual.TextStim(win, text = "Thank you!",
 
 null_txt = visual.TextStim(win, text = "+",
                         pos = [0.0,0.0],
-                        color = "black",
+                        color = "white",
                         height = 50,
                         alignHoriz='center',
                         alignVert='center',
@@ -44,7 +49,7 @@ null_txt = visual.TextStim(win, text = "+",
                         
 instruct_txt = visual.TextStim(win, text = " In this experiment you will be reading words.\n Please, read them carefully.\n Press the space bar when you are ready to continue.",
                         pos = [0.0,0.0],
-                        color = "black",
+                        color = "white",
                         height = 24,
                         alignHoriz='center',
                         alignVert='center',
@@ -52,13 +57,8 @@ instruct_txt = visual.TextStim(win, text = " In this experiment you will be read
                         wrapWidth= 1000,
                         autoLog=True)
 
-#get some startup information from the user
-info = {'participant_id':'', 'session': '1'}
-dlg = gui.DlgFromDict(info, title = 'Word Task Startup')
-if not dlg.OK:
-    core.quit()
- 
-prefix = 'sub-%s_ses-%s_task-word' % (info['participant_id'], info['session'])
+
+prefix = 'sub-%s_ses-%s_task-word_run-%s' % (info['participant_id'], info['session'], info['run'])
 
 #logging data 
 # overwrite (filemode='w') a detailed log of the last run in this dir
@@ -66,7 +66,7 @@ errorLog = logging.LogFile(prefix + "_errorlog.log", level=logging.DATA, filemod
 #win.logonFlip(msg=' ', level=logging.DATA)
 # in the data source, there are three columns: Time, StimType and Stim
 # load in our stimulus timing xlsx file
-TRIAL_LIST = data.importConditions(fileName = parent_dir + "RunTest.xlsx")
+TRIAL_LIST = data.importConditions(fileName = "%s/Run%s.xlsx" % (parent_dir, info['run']))
 totalTrials = len(TRIAL_LIST)
                         
 def check_exit():
@@ -111,7 +111,7 @@ for index in range(len(TRIAL_LIST)):
     #init stim
     stim = visual.TextStim(win, text=TRIAL_LIST[index]['Stim'], 
                         pos = [0.0,0.0],
-                        color="black",
+                        color="white",
                         height=50,
                         alignHoriz='center',
                         alignVert='center',
@@ -120,16 +120,18 @@ for index in range(len(TRIAL_LIST)):
                         autoLog=True)
     stim.draw();
     win.flip()
+    onset = globalClock.getTime()
+    stim_onset = onset - t0
     logging.log("Datalog.log",level=logging.EXP)
     win.logOnFlip("Datalog.log",level=logging.EXP)
-    onset = globalClock.getTime()
+    
     core.wait(1.25-(globalClock.getTime()-onset))
     null_txt.draw()
     win.flip()
     onset = globalClock.getTime() 
     core.wait(1.25-(globalClock.getTime()-onset))
     # store data into the numpy array
-    data = np.vstack((data, np.hstack((TRIAL_LIST[index]["Stim"],TRIAL_LIST[index]['StimType'],onset,))))# round the onset time (in seconds) to the third decimal place
+    data = np.vstack((data, np.hstack((TRIAL_LIST[index]["Stim"],TRIAL_LIST[index]['StimType'],stim_onset,))))
 #clear screen
 null_txt.draw()
 win.flip()
