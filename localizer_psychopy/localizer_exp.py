@@ -130,7 +130,8 @@ ScannerWait_txt.draw()
 win.flip()  
 #wait for a 5 or t keypress to start
 keys =event.waitKeys(keyList=['t','5'], timeStamped=globalClock)
-t0 = float(keys[0][0])
+
+t0 = float(keys[0][1])
 #creating variable for flip duration
 flip_duration= 21
 # header for data log
